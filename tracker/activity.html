@@ -12,6 +12,7 @@
 
 <body>
     <div id="app">
+        <!-- I have a lot of notes for personal use from the videos on this assignment-->
 
         <!-- TODO display the name of the activity -->
         <h1 class="text-center"> {{ activity }}  Time Tracker</h1>
@@ -116,13 +117,16 @@
                             <th>Media</th>
                         </tr>
                         <!-- TODO use v-for to create one table row for each activity record -->
+                        <!-- v-bind adds classes to use with css based on type of activity-->
                         <tr v-for="record in activityRecords"   v-bind:class="{ sketch: record.type === 'Sketching', draw: record.type === 'Drawing', paint: record.type ==='Painting' }">
                             <td> {{ shortDate(record.date) }} </td>
                             <td> {{ record.hours}} </td>
                             <td> {{ record.type }} </td>
                             <td> {{ record.medium }} </td>
+                            <!-- for v-if and else one will appear depending on if completed checkbox is checked-->
                             <td v-if="record.completed"> Completed</td>
                             <td v-else>  Not completed</td>
+                            <!-- running method on notes before showing on page to shorten notes-->
                             <td> {{ notesLength(record.notes) }} </td>
 
                         </tr>
@@ -167,7 +171,9 @@
                 type: 'Sketching',
                 medium: 'Traditional',
                 types: ['Sketching', 'Drawing', 'Painting'],
-                errors: []
+                errors: [],
+                completed: true,
+                notes: ''
             }
         },
         methods:{
@@ -195,6 +201,7 @@
                     hours: this.hours,
                     type: this.type,
                     medium: this.medium,
+                    // added properties
                     completed: this.completed,
                     notes: this.notes
 
@@ -214,6 +221,7 @@
                 return new Intl.DateTimeFormat('en-US', {timeZone: 'UTC'}).format(date)
             },
             // from https://stackoverflow.com/questions/3414916/display-only-10-characters-of-a-long-string
+            // if notes are longer than 40 characters it shows on page first 40 characters and add ...
             notesLength(note){
                 if(note.length > 40){
                     note = note.substring(0, 40)+ '...'
@@ -222,7 +230,7 @@
                 return note
 
             }
-        
+            
 
         },
         computed:{
@@ -245,7 +253,7 @@
             }
 
         }
-
+        
     })
     app.mount('#app')
     </script>
